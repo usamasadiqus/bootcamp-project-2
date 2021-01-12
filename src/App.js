@@ -9,6 +9,7 @@ function App() {
   const [totalRecovered, setTotalRecovered] = useState(0);
   const [totalDeaths, setTotalDeaths] = useState(0);
   const [loading, setLoading] = useState(false);
+  const [covidSummary, setCovidSummary] = useState({});
 
   useEffect(() => {
     setLoading(true);
@@ -21,6 +22,7 @@ function App() {
           setTotalConfirmed(res.data.Global.TotalConfirmed);
           setTotalRecovered(res.data.Global.NewRecovered);
           setTotalDeaths(res.data.Global.TotalDeaths);
+          setCovidSummary(res.data);
         }
 
         console.log(res);
@@ -42,6 +44,17 @@ function App() {
         totalDeaths={totalDeaths}
         country={""}
       />
+
+      <div>
+        <select>
+          {covidSummary.Countries &&
+            covidSummary.Countries.map((country) => (
+              <option key={country.Slug} value={country.Slug}>
+                {country.Country}
+              </option>
+            ))}
+        </select>
+      </div>
 
       <LineGraph />
     </div>
