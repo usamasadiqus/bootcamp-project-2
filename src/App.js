@@ -1,8 +1,7 @@
-import axios from "./components/api";
+import { axios, Navbar, Chart, CovidSummary } from "./components";
 import { useEffect, useState } from "react";
+import { Box, Typography } from "@material-ui/core";
 import "./App.css";
-import CovidSummary from "./components/CovidSummary";
-import LineGraph from "./components/LineGraph";
 
 function App() {
   const [totalConfirmed, setTotalConfirmed] = useState(0);
@@ -22,11 +21,14 @@ function App() {
       .then((res) => {
         setLoading(false);
 
+        const { TotalConfirmed, TotalRecovered, TotalDeaths } = res.data.Global;
+        const { data } = res;
+
         if (res.status === 200) {
-          setTotalConfirmed(res.data.Global.TotalConfirmed);
-          setTotalRecovered(res.data.Global.NewRecovered);
-          setTotalDeaths(res.data.Global.TotalDeaths);
-          setCovidSummary(res.data);
+          setTotalConfirmed(TotalConfirmed);
+          setTotalRecovered(TotalRecovered);
+          setTotalDeaths(TotalDeaths);
+          setCovidSummary(data);
         }
 
         console.log(res);
@@ -92,11 +94,13 @@ function App() {
   };
 
   if (loading) {
-    return <p>Fetch data from api...!</p>;
+    return <Typography variant="body1">Fetch data from api...!</Typography>;
   }
 
   return (
-    <div className="App">
+    <Box className="App">
+      <Navbar />
+
       <CovidSummary
         totalConfirmed={totalConfirmed}
         totalRecovered={totalRecovered}
@@ -104,9 +108,13 @@ function App() {
         country={country}
       />
 
-      <div>
-        <select value={country} onChange={changeHandler}>
-          <select value="">Select Country</select>
+      <Box>
+        <select
+          value={country}
+          onChange={changeHandler}
+          style={{ margin: "20px 0 0", width: 400, height: 40 }}
+        >
+          <select value="global">Select Country</select>
           {covidSummary.Countries &&
             covidSummary.Countries.map((country) => (
               <option key={country.Slug} value={country.Slug}>
@@ -114,15 +122,19 @@ function App() {
               </option>
             ))}
         </select>
-        <select value={days} onChange={daysHandler}>
+        <select
+          value={days}
+          onChange={daysHandler}
+          style={{ width: 100, height: 40 }}
+        >
           <option value="7">Last 7 days</option>
           <option value="30">Last 30 days</option>
           <option value="90">Last 90 days</option>
         </select>
-      </div>
+      </Box>
 
-      <LineGraph yAxis={coronaCountAr} label={label} />
-    </div>
+      <Chart yAxis={coronaCountAr} label={label} />
+    </Box>
   );
 }
 

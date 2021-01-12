@@ -1,11 +1,11 @@
 import { Line } from "react-chartjs-2";
 
-const LineGraph = (props) => {
+const Chart = (props) => {
   return (
     <div
       style={{
         width: "600px",
-        height: "600px",
+        height: "300px",
         margin: "50px auto",
       }}
     >
@@ -41,4 +41,4 @@ const LineGraph = (props) => {
   );
 };
 
-export default LineGraph;
+export default Chart;
