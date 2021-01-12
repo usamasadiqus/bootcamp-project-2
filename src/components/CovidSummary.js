@@ -1,10 +1,12 @@
 import Card from "./Card";
 
-const CovidSummary = () => {
+const CovidSummary = (props) => {
+  const { totalConfirmed, totalRecovered, totalDeaths, country } = props;
+
   return (
     <div>
       <div>
-        <h1>World wide corona report</h1>
+        <h1>{country === "" ? "World Wide Corona Report" : country}</h1>
         <div
           style={{
             display: "flex",
