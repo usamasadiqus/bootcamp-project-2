@@ -12,6 +12,8 @@ function App() {
   const [covidSummary, setCovidSummary] = useState({});
   const [days, setDays] = useState(7);
   const [country, setCountry] = useState("");
+  const [coronaCountAr, setCoronaCountAr] = useState([]);
+  const [label, setLabel] = useState([]);
 
   useEffect(() => {
     setLoading(true);
@@ -48,7 +50,7 @@ function App() {
 
     const d = new Date();
     const to = formatDate(d);
-    const from = formatDate(d.setDate(d.getDate() - 7));
+    const from = formatDate(d.setDate(d.getDate() - days));
 
     // console.log(from, to);
 
@@ -66,6 +68,17 @@ function App() {
       )
       .then((res) => {
         console.log(res);
+
+        const yAxisCoronaCount = res.data.map((d) => d.Cases);
+        const xAxisLabel = res.data.map((d) => d.Date);
+        const covidDetails = covidSummary.Countries.find(
+          (country) => country.Slug === countrySlug
+        );
+        setCoronaCountAr(yAxisCoronaCount);
+        setTotalConfirmed(covidDetails.TotalConfirmed);
+        setTotalRecovered(covidDetails.TotalRecovered);
+        setTotalDeaths(covidDetails.TotalDeaths);
+        setLabel(xAxisLabel);
       })
       .catch((error) => {
         console.log(error);
@@ -82,11 +95,12 @@ function App() {
         totalConfirmed={totalConfirmed}
         totalRecovered={totalRecovered}
         totalDeaths={totalDeaths}
-        country={""}
+        country={country}
       />
 
       <div>
         <select value={country} onChange={changeHandler}>
+          <select value="">Select Country</select>
           {covidSummary.Countries &&
             covidSummary.Countries.map((country) => (
               <option key={country.Slug} value={country.Slug}>
@@ -101,7 +115,7 @@ function App() {
         </select>
       </div>
 
-      <LineGraph />
+      <LineGraph yAxis={coronaCountAr} label={label} />
     </div>
   );
 }

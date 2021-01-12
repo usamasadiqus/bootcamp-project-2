@@ -1,6 +1,6 @@
 import { Line } from "react-chartjs-2";
 
-const LineGraph = () => {
+const LineGraph = (props) => {
   return (
     <div
       style={{
@@ -11,18 +11,10 @@ const LineGraph = () => {
     >
       <Line
         data={{
-          labels: [
-            "January",
-            "February",
-            "March",
-            "April",
-            "May",
-            "June",
-            "July",
-          ],
+          labels: props.label.map((l) => l.substr(0, 10)),
           datasets: [
             {
-              label: "My First dataset",
+              label: "My covid19 dataset",
               fill: false,
               lineTension: 0.1,
               backgroundColor: "rgba(75,192,192,0.4)",
@@ -40,7 +32,7 @@ const LineGraph = () => {
               pointHoverBorderWidth: 2,
               pointRadius: 1,
               pointHitRadius: 10,
-              data: [65, 59, 80, 81, 56, 55, 40],
+              data: props.yAxis,
             },
           ],
         }}
