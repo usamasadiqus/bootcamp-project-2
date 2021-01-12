@@ -16,17 +16,17 @@ const CovidSummary = (props) => {
           <Card>
             <span>Total Confirmed</span>
             <br />
-            <span>0</span>
+            <span>{totalConfirmed}</span>
           </Card>
           <Card>
             <span>Total Recovered</span>
             <br />
-            <span>0</span>
+            <span>{totalRecovered}</span>
           </Card>
           <Card>
             <span>Total Deaths</span>
             <br />
-            <span>0</span>
+            <span>{totalDeaths}</span>
           </Card>
         </div>
       </div>
