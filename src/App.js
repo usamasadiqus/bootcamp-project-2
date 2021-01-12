@@ -59,6 +59,12 @@ function App() {
 
   const daysHandler = (e) => {
     setDays(e.target.value);
+
+    const d = new Date();
+    const to = formatDate(d);
+    const from = formatDate(d.setDate(d.getDate() - e.target.value));
+
+    getCoronaReportByDateRange(country, from, to);
   };
 
   const getCoronaReportByDateRange = (countrySlug, from, to) => {
